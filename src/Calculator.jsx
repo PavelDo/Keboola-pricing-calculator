@@ -52,6 +52,45 @@ const INDUSTRY_BENCHMARKS = {
 
 const COMPANY_SIZES = { small: 'Small', medium: 'Medium', large: 'Large', xlarge: 'Extra Large' };
 
+const MONTHLY_BENCHMARKS = {
+  retail: { name: 'Retail & E-commerce', data: {
+    small: { jobs: 6, extractor: 0.0, python: 0.0, sql: 0.0, writer: 0.0, monthly: 0, yearly: 3 },
+    medium: { jobs: 959, extractor: 8.9, python: 1.0, sql: 34, writer: 0.4, monthly: 371, yearly: 4449 },
+    large: { jobs: 5959, extractor: 67, python: 2.0, sql: 154, writer: 15, monthly: 2001, yearly: 24013 },
+    xlarge: { jobs: 49050, extractor: 549, python: 21, sql: 2016, writer: 234, monthly: 23666, yearly: 283996 },
+  }},
+  finance: { name: 'Finance & Banking', data: {
+    small: { jobs: 394, extractor: 3.7, python: 0.8, sql: 0.9, writer: 0.0, monthly: 45, yearly: 542 },
+    medium: { jobs: 1176, extractor: 24, python: 0.0, sql: 32, writer: 2.3, monthly: 483, yearly: 5795 },
+    large: { jobs: 10212, extractor: 80, python: 7.0, sql: 93, writer: 19, monthly: 1669, yearly: 20022 },
+    xlarge: { jobs: 123228, extractor: 538, python: 29, sql: 891, writer: 67, monthly: 12800, yearly: 153600 },
+  }},
+  technology: { name: 'Technology', data: {
+    small: { jobs: 268, extractor: 3.7, python: 0.0, sql: 1.9, writer: 0.1, monthly: 48, yearly: 570 },
+    medium: { jobs: 2431, extractor: 12, python: 2.7, sql: 12, writer: 0.9, monthly: 234, yearly: 2805 },
+    large: { jobs: 15159, extractor: 46, python: 3.5, sql: 94, writer: 33, monthly: 1477, yearly: 17721 },
+    xlarge: { jobs: 23240, extractor: 394, python: 28, sql: 946, writer: 103, monthly: 12334, yearly: 148011 },
+  }},
+  manufacturing: { name: 'Manufacturing', data: {
+    small: { jobs: 108, extractor: 0.6, python: 0.0, sql: 2.8, writer: 0.3, monthly: 31, yearly: 374 },
+    medium: { jobs: 2185, extractor: 14, python: 0.9, sql: 16, writer: 0.4, monthly: 267, yearly: 3201 },
+    large: { jobs: 16990, extractor: 91, python: 1.4, sql: 112, writer: 18, monthly: 1866, yearly: 22392 },
+    xlarge: { jobs: 27505, extractor: 282, python: 6.2, sql: 177, writer: 27, monthly: 4123, yearly: 49475 },
+  }},
+  healthcare: { name: 'Healthcare', data: {
+    small: { jobs: 10, extractor: 0.3, python: 0.0, sql: 0.9, writer: 0.0, monthly: 10, yearly: 122 },
+    medium: { jobs: 3103, extractor: 0.0, python: 0.7, sql: 53, writer: 3.7, monthly: 483, yearly: 5800 },
+    large: { jobs: 8805, extractor: 68, python: 7.8, sql: 111, writer: 9.3, monthly: 1642, yearly: 19701 },
+    xlarge: { jobs: 27084, extractor: 510, python: 114, sql: 610, writer: 63, monthly: 10881, yearly: 130577 },
+  }},
+  media: { name: 'Media & Entertainment', data: {
+    small: { jobs: 361, extractor: 6.5, python: 0.0, sql: 3.4, writer: 0.0, monthly: 83, yearly: 992 },
+    medium: { jobs: 755, extractor: 23, python: 0.7, sql: 37, writer: 7.8, monthly: 573, yearly: 6880 },
+    large: { jobs: 4035, extractor: 56, python: 3.0, sql: 172, writer: 11, monthly: 2028, yearly: 24338 },
+    xlarge: { jobs: 23907, extractor: 235, python: 21, sql: 397, writer: 79, monthly: 6144, yearly: 73729 },
+  }},
+};
+
 const PACKAGES = {
   noBrainer: { name: 'No Brainer', price: 69000, ppu: 6000, overageRate: 2.5, snowflake: 'Included', projects: 3, users: 5 },
   byodb: { name: 'BYODB', price: 60000, ppu: 6000, overageRate: 1.0, snowflake: 'Bring Your Own', projects: 3, users: 5 },
@@ -302,7 +341,7 @@ export default function Calculator() {
         {/* Industry Benchmark Data */}
         <div className="mt-6 bg-slate-800 rounded-xl p-4 border border-slate-700">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-            <h3 className="font-semibold text-amber-400">Real Client Benchmarks (PPU per Job)</h3>
+            <h3 className="font-semibold text-amber-400">Real Client Benchmarks</h3>
             <div className="flex gap-2">
               <select value={industry} onChange={e => setIndustry(e.target.value)}
                 className="bg-slate-700 text-white text-xs rounded px-2 py-1 border border-slate-600">
@@ -321,19 +360,22 @@ export default function Calculator() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <div className="text-xs text-slate-400 mb-2">{INDUSTRY_BENCHMARKS[industry].name} - All Sizes</div>
+              <div className="text-xs text-slate-400 mb-2">{MONTHLY_BENCHMARKS[industry].name} - Monthly PPU per Client</div>
               <table className="w-full text-xs">
                 <thead><tr className="text-slate-400 border-b border-slate-600">
-                  <th className="text-left py-1">Size</th><th className="text-right py-1">Extractor</th><th className="text-right py-1">Python</th><th className="text-right py-1">SQL</th><th className="text-right py-1">Writer</th>
+                  <th className="text-left py-1">Size</th><th className="text-right py-1">Jobs/Mo</th><th className="text-right py-1">Extractor</th><th className="text-right py-1">Python</th><th className="text-right py-1">SQL</th><th className="text-right py-1">Writer</th><th className="text-right py-1">$/Mo</th><th className="text-right py-1">$/Year</th>
                 </tr></thead>
                 <tbody>
-                  {Object.entries(INDUSTRY_BENCHMARKS[industry].data).map(([size, data]) => (
+                  {Object.entries(MONTHLY_BENCHMARKS[industry].data).map(([size, data]) => (
                     <tr key={size} className={`border-b border-slate-700 ${size === companySize ? 'bg-emerald-500/10' : ''}`}>
                       <td className={`py-1 ${size === companySize ? 'text-emerald-400 font-medium' : ''}`}>{COMPANY_SIZES[size]}</td>
-                      <td className="text-right">{data.extractor !== null ? data.extractor.toFixed(3) : '--'}</td>
-                      <td className="text-right">{data.python !== null ? data.python.toFixed(3) : '--'}</td>
-                      <td className="text-right">{data.sql !== null ? data.sql.toFixed(3) : '--'}</td>
-                      <td className="text-right">{data.writer !== null ? data.writer.toFixed(3) : '--'}</td>
+                      <td className="text-right">{data.jobs.toLocaleString()}</td>
+                      <td className="text-right">{data.extractor.toLocaleString()}</td>
+                      <td className="text-right">{data.python.toLocaleString()}</td>
+                      <td className="text-right">{data.sql.toLocaleString()}</td>
+                      <td className="text-right">{data.writer.toLocaleString()}</td>
+                      <td className="text-right">${data.monthly.toLocaleString()}</td>
+                      <td className="text-right">${data.yearly.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -341,7 +383,7 @@ export default function Calculator() {
             </div>
 
             <div>
-              <div className="text-xs text-slate-400 mb-2">Cross-Industry Comparison ({COMPANY_SIZES[companySize]})</div>
+              <div className="text-xs text-slate-400 mb-2">Cross-Industry Comparison per Job ({COMPANY_SIZES[companySize]})</div>
               <table className="w-full text-xs">
                 <thead><tr className="text-slate-400 border-b border-slate-600">
                   <th className="text-left py-1">Industry</th><th className="text-right py-1">Extractor</th><th className="text-right py-1">Python</th><th className="text-right py-1">SQL</th><th className="text-right py-1">Writer</th>
@@ -362,7 +404,7 @@ export default function Calculator() {
           </div>
 
           <div className="mt-3 text-xs text-slate-500">
-            Fidoo (Technology/Medium): estimated ~461 PPU/mo is conservative compared to typical {INDUSTRY_BENCHMARKS[industry].name} workloads.
+            Note: All PPU values (Extractor, Python, SQL, Writers) are monthly PPU per average client in that segment. Data based on 13 months (Jan 2025 - Jan 2026).
           </div>
         </div>
 
