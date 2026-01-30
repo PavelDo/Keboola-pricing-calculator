@@ -2,6 +2,8 @@
 
 A React-based pricing calculator for Keboola platform PPU (Pay-Per-Use) estimation.
 
+**Live Demo:** [keboola-pricing-calculator.vercel.app](https://keboola-pricing-calculator.vercel.app)
+
 ## Features
 
 - Calculate PPU consumption for integration and analytics workloads
