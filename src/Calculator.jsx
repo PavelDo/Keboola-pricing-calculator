@@ -132,7 +132,7 @@ export default function Calculator() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-emerald-400">Keboola Pricing Calculator</h1>
-          <p className="text-slate-400 text-sm">Fidoo Case: ERP-to-Web integration + analytics for 100 clients</p>
+          <p className="text-slate-400 text-sm">Calculator for scenarios data integration + analytics + data activation</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-4">
